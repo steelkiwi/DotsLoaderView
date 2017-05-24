@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="arc_height">40dp</dimen>
+    <dimen name="arc_width">70dp</dimen>
+    <dimen name="bottom_line_margin">12dp</dimen>
+    <dimen name="line_width">19dp</dimen>
+</resources>
