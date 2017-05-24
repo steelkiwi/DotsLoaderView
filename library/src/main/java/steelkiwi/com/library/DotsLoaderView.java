@@ -4,11 +4,14 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +25,7 @@ import java.util.List;
  * Created by yaroslav on 5/24/17.
  */
 
-public class PointsLoaderView extends RelativeLayout {
+public class DotsLoaderView extends RelativeLayout {
 
     private static final int START_DELAY = 120;
     private static final int REPEAT_ANIMATION_DELAY = 1800;
@@ -42,28 +45,38 @@ public class PointsLoaderView extends RelativeLayout {
     private int bottomLineMargin;
     private int lineWidth;
     private boolean isStop;
+    private int lineColor;
+    private Drawable drawable;
 
 
-    public PointsLoaderView(Context context) {
+    public DotsLoaderView(Context context) {
         super(context);
-        init();
+        init(null);
     }
 
-    public PointsLoaderView(Context context, AttributeSet attrs) {
+    public DotsLoaderView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        init(attrs);
     }
 
-    public PointsLoaderView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public DotsLoaderView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
+        init(attrs);
     }
 
-    private void init() {
+    private void init(AttributeSet attrs) {
+        prepareParameters(attrs);
         prepareSize();
         initializePaints();
         initializePath();
         preparePath();
+    }
+
+    private void prepareParameters(AttributeSet attrs) {
+        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.DotsLoaderView);
+        setLineColor(typedArray.getInt(R.styleable.DotsLoaderView_dlv_line_color, 0));
+        setDrawable(typedArray.getDrawable(R.styleable.DotsLoaderView_dlv_item_drawable));
+        typedArray.recycle();
     }
 
     private void prepareSize() {
@@ -78,7 +91,7 @@ public class PointsLoaderView extends RelativeLayout {
     private void initializePaints() {
         setBackgroundResource(android.R.color.transparent);
         backgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        backgroundPaint.setColor(Color.BLACK);
+        backgroundPaint.setColor(getLineColor());
         backgroundPaint.setStyle(Paint.Style.STROKE);
     }
 
@@ -154,6 +167,7 @@ public class PointsLoaderView extends RelativeLayout {
     }
 
     private void prepareViewScale(View view, float scale) {
+        view.setBackground(getDrawable());
         view.setScaleX(scale);
         view.setScaleY(scale);
     }
@@ -296,11 +310,27 @@ public class PointsLoaderView extends RelativeLayout {
         this.lineWidth = lineWidth;
     }
 
-    public boolean isStop() {
+    private boolean isStop() {
         return isStop;
     }
 
     private void setStop(boolean stop) {
         isStop = stop;
+    }
+
+    private int getLineColor() {
+        return lineColor;
+    }
+
+    private void setLineColor(int lineColor) {
+        this.lineColor = lineColor;
+    }
+
+    private Drawable getDrawable() {
+        return drawable;
+    }
+
+    public void setDrawable(Drawable drawable) {
+        this.drawable = drawable;
     }
 }
