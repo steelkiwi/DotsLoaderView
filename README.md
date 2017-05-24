@@ -4,4 +4,4 @@ Wonderful dots loader view inspired this [Design](https://material.uplabs.com/po
 
 # View
 
-![](https://github.com/steelkiwi/DotsLoaderView/blob/master/assets/loader.gif)
+![](https://github.com/soulyaroslav/DotsLoaderView/blob/master/assets/loader.gif)
