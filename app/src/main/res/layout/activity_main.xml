@@ -4,12 +4,31 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background">
+    android:background="@color/background_color">
+
+   <LinearLayout
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:orientation="horizontal">
+
+       <Button
+           android:id="@+id/show"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="show"/>
+
+       <Button
+           android:id="@+id/hide"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="hide"/>
+   </LinearLayout>
 
     <steelkiwi.com.library.DotsLoaderView
         android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="visible"
         app:dlv_item_drawable="@drawable/circle_background"
         app:dlv_line_color="@color/point_color"/>
 </RelativeLayout>

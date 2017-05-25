@@ -6,12 +6,10 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
-import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +34,7 @@ public class DotsLoaderView extends RelativeLayout {
     private Paint backgroundPaint;
     private Path fullPath;
     private List<View> points = new ArrayList<>();
+    private Handler handler;
     private int startDelay = 0;
     private boolean isLastView = false;
     private int viewWidth;
@@ -47,6 +46,7 @@ public class DotsLoaderView extends RelativeLayout {
     private boolean isStop;
     private int lineColor;
     private Drawable drawable;
+    private boolean isAnimationFinish;
 
 
     public DotsLoaderView(Context context) {
@@ -65,11 +65,14 @@ public class DotsLoaderView extends RelativeLayout {
     }
 
     private void init(AttributeSet attrs) {
+        handler = new Handler();
         prepareParameters(attrs);
         prepareSize();
         initializePaints();
         initializePath();
         preparePath();
+        setAnimationFinish(true);
+        setStop(false);
     }
 
     private void prepareParameters(AttributeSet attrs) {
@@ -129,42 +132,49 @@ public class DotsLoaderView extends RelativeLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
         preparePointViews();
-        play();
     }
 
-    public void play() {
-        setStop(false);
-        animateViews();
+    public void show() {
+        if(isAnimationFinish()) {
+            setVisibility(VISIBLE);
+            setStop(false);
+            animateViews();
+            setAnimationFinish(false);
+        }
     }
 
-    public void stop() {
+    public void hide() {
         setStop(true);
+        setAnimationFinish(true);
+        handler.removeCallbacks(repeatRunnable);
     }
 
     public void animateViews() {
-        setStartDelay(0);
-        for(int i = 0; i < points.size(); i++) {
-            View view = getView(i);
-            prepareViewScale(view, 0f);
-            translateView(view, getStartDelay());
-            scaleViewX(view, getStartDelay());
-            scaleViewY(view, getStartDelay());
-            startDelay += START_DELAY;
-            manageLastView(i);
+        if(!isStop()) {
+            setStartDelay(0);
+            for (int i = 0; i < points.size(); i++) {
+                View view = getView(i);
+                prepareViewScale(view, 0f);
+                translateView(view, getStartDelay());
+                scaleViewX(view, getStartDelay());
+                scaleViewY(view, getStartDelay());
+                startDelay += START_DELAY;
+                manageLastView(i);
+            }
+            repeatAnimation();
         }
-        repeatAnimation();
     }
 
     private void repeatAnimation() {
-        if(isLastView() && !isStop()) {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    animateViews();
-                }
-            }, REPEAT_ANIMATION_DELAY);
-        }
+        handler.postDelayed(repeatRunnable, REPEAT_ANIMATION_DELAY);
     }
+
+    private Runnable repeatRunnable = new Runnable() {
+        @Override
+        public void run() {
+            animateViews();
+        }
+    };
 
     private void prepareViewScale(View view, float scale) {
         view.setBackground(getDrawable());
@@ -176,6 +186,14 @@ public class DotsLoaderView extends RelativeLayout {
         ObjectAnimator animator = ObjectAnimator.ofFloat(view, "x", "y", fullPath).setDuration(TRANSLATION_DELAY);
         animator.setInterpolator(new AccelerateDecelerateInterpolator());
         animator.setStartDelay(startDelay);
+        animator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if(isLastView() && isStop()) {
+                    setVisibility(GONE);
+                }
+            }
+        });
         animator.start();
     }
 
@@ -330,7 +348,15 @@ public class DotsLoaderView extends RelativeLayout {
         return drawable;
     }
 
-    public void setDrawable(Drawable drawable) {
+    private void setDrawable(Drawable drawable) {
         this.drawable = drawable;
+    }
+
+    private boolean isAnimationFinish() {
+        return isAnimationFinish;
+    }
+
+    private void setAnimationFinish(boolean animationFinish) {
+        isAnimationFinish = animationFinish;
     }
 }
