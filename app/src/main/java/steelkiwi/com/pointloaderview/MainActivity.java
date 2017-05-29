@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        final DotsLoaderView view1 = (DotsLoaderView) findViewById(R.id.view);
+        final DotsLoaderView view1 = (DotsLoaderView) findViewById(R.id.dotsLoaderView);
         Button show = (Button) findViewById(R.id.show);
         Button hide = (Button) findViewById(R.id.hide);
 

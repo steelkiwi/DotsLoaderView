@@ -15,17 +15,17 @@
            android:id="@+id/show"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
-           android:text="show"/>
+           android:text="@string/show"/>
 
        <Button
            android:id="@+id/hide"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
-           android:text="hide"/>
+           android:text="@string/hide"/>
    </LinearLayout>
 
     <steelkiwi.com.library.DotsLoaderView
-        android:id="@+id/view"
+        android:id="@+id/dotsLoaderView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="visible"

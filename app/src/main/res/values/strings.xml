@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">PointLoaderView</string>
+    <string name="show">show</string>
+    <string name="hide">hide</string>
 </resources>
