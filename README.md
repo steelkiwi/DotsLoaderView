@@ -36,7 +36,7 @@ You can customize view, through this attributes
 * app:dlv_item_drawable - background shape for dot view
 * app:dlv_line_color - view bottom line color
 
-To use it in the code you need only call this method
+To use it in the code you need only call this methods
 
 ```java
 // to show loading
