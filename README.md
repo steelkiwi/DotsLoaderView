@@ -1,4 +1,4 @@
-# Dots Loader View
+# DotsLoaderView
 
 [![Made in SteelKiwi](https://github.com/steelkiwi/IndicatorView/blob/master/assets/made_in_steelkiwi.png)](http://steelkiwi.com/blog/)
 [![Download](https://api.bintray.com/packages/soulyaroslav/maven/dots-loader-view/images/download.svg)](https://bintray.com/soulyaroslav/maven/dots-loader-view/_latestVersion)
